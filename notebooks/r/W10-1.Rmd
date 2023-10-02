@@ -1,0 +1,211 @@
+---
+title: 'Workshop 10: practicing supervised machine learning'
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+In this notebook, we are going to look into classifying documents into diagnostics vs. non diagnostics using pubmed data from the cancerscreen project. 
+ This is a larger and not pre-processed dataset compared to the one used in the lecture. Let's have a look at the dataset to see what's in our dataset.
+
+```{r}
+# 1. Explore data
+rm(list=ls())
+library(tidyverse)
+
+setwd("__")
+Medline <- readRDS("Diag_full.rds")
+Medline <- as.tibble(Medline)
+summary(Medline)
+glimpse(Medline)
+```
+
+We have:
+PMID : pubmed ids
+T_A: title and abstract merged into one field
+DP : publication year (it seems that it is only 2015)
+Case: whether it is colorectal, lung or prostate cancer. 
+diagnosis: whether the paper is about diagnosis or not
+diag_type: a categorisation of diagnosis 
+
+Let's give the data a first transformation from characters to categories to understand better the characteristics of our data
+
+```{r}
+# 2. select the relevant data
+# select the type of classification to keep
+Medline <- Medline %>%
+  select(-diag_type, -case)%>%
+  unique()
+
+# Make sure the data is randomised
+set.seed(200)
+Medline <- Medline[sample(nrow(Medline)),]
+
+```
+
+Let's clean part of the text:
+```{r}
+# 3. Normalize text for machine learning
+
+library(tidytext)
+library(tm)
+library(SnowballC)
+Stop_w<- c(stopwords("en"), "introduction", "conclusion","objective", "aim", "methods", "results", "conclusions","background", "percent", "may", "use", "used", "however", "p", "cancer", "study", "lung", "prostate","prostatic", "patient", "colorectal")
+Medline$T_A <- removeNumbers(Medline$T_A)
+Medline$T_A <- tolower(Medline$T_A)
+Medline$T_A <-str_replace_all(Medline$T_A, "[^[:alnum:]]", " ")
+Medline$T_A <- removeWords(Medline$T_A, Stop_w)
+
+Medline$T_A <- gsub('\\b\\w{1,2}\\b', '', Medline$T_A) # remove words of two letters or under
+
+```
+
+Extract the tokens and compute tf-idf
+```{r}
+# 4. Get the word as features in columns
+
+# reduce the size of the data to speed up the routine
+Tidy_Med <- Medline [1:3000,]
+
+# extract token and use stemming. 
+Tidy_Med <- Tidy_Med %>%
+  unnest_tokens(word, T_A) %>%
+  mutate(word = wordStem(word, language="english")) 
+
+# compute word counts
+Tidy_Med <- Tidy_Med %>%
+  count(PMID, word, sort=T) 
+
+# compute tf_idf
+Tidy_Med <- Tidy_Med %>%
+  bind_tf_idf(word, PMID, n)
+
+# save the diagnostics features separately
+diag <- Medline %>%
+  select(PMID, diagnosis)%>%
+  unique()
+
+# Create a list of word to keep which are higher than a certain threshold
+word <- Tidy_Med %>%
+  group_by(word) %>%
+  summarize(n_doc = n())%>%
+  filter(n_doc>39)
+
+# only select the words over the threshold
+Tidy_Med <- inner_join(Tidy_Med, word)%>%
+  select(-n_doc)
+
+#make words into columns/features
+Tidy_Med <- Tidy_Med %>%
+  select(-c(n, tf, idf))%>%
+  pivot_wider(names_from = word,
+              values_from = tf_idf, 
+              values_fill=list(tf_idf = 0))
+
+# add back the diagnosis column
+Tidy_Med <- inner_join(diag, Tidy_Med)
+```
+
+Normalise the column names, to make sure it does not create any errors when using mlr3
+```{r}
+# 5. Tidy up columns
+Tidy_up <- Tidy_Med
+names(Tidy_up)[3:ncol(Tidy_up)]<- as.character(seq(1, ncol(Tidy_up)-2, by=1))
+colnames(Tidy_up) <- make.names(colnames(Tidy_up),unique = T)
+Tidy_up$diagnosis <- as.factor(Tidy_up$diagnosis)
+```
+
+Set up the learner using mlr3
+```{r}
+# 6. Set up the learner
+# install.packages("mlr3")
+# install.packages("mlr3learners", dependencies = TRUE)
+library(mlr3)
+library(mlr3learners)
+
+# set up the classifier task using the right data and target
+task = TaskClassif$new(id="PMID", backend=Tidy_up, target="diagnosis")
+
+# define the algorithm to be used
+learner = lrn("classif.rpart")
+
+```
+
+Train the model
+```{r}
+# 7. Train the model
+# train a model of this learner for a subset of the task
+learner$train(task, row_ids = 1:300)
+# this is what the decision tree looks like
+learner$model
+```
+
+Test the model:
+```{r}
+# 8. Use the test set to see how the model is classifying the test data
+predictions = learner$predict(task, row_ids = 301:350)
+
+# look at the first 10 rows of the predictions
+head(as.data.table(predictions), n=10)
+```
+
+
+Look at the accuracy score
+```{r}
+# 9. accuracy of our model on the test set
+predictions$score(msr("classif.acc"))
+```
+
+```{r}
+# 10. look at the confusion matrix
+predictions$confusion
+```
+
+
+## Exercise 1: sample data ## (8 minutes)
+Let's see if we can increase the current accuracy
+What about if we increased the training data does that change the accuracy of the model?
+Let's change in #7. and #8. to 
+1. training 500, test 200
+2. training 750, test 300
+3. training 1000, test 400
+4. training 1500, test 700
+
+Which training size seems to give better accuracy?
+
+## Let's add probabilities ##
+At the end of #6. add the following line of code to check the confidence of the algorithm towards their prediction
+learner$predict_type ="prob"
+
+## Exercise 2: change the algorithm ## (8 minutes)
+mlr3 comes with the learner 'classif.rpart'(#6.), but we can change the algorithm to other learners using the mlr3learners package (https://github.com/mlr-org/mlr3learners)
+Try the following algorithms instead in #6.
+1. classif.svm
+2. classif.glmnet
+3. classif.ranger
+
+Others are available, you can try others if you have time...
+
+(if you get an error you may install a package as prompted... e.g. install.packages("ranger"))
+
+## Exercise 3: Let's change the balance of the data to see if it affects the predicition ## (15 minutes)
+
+In #2. let's see if an unbalanced vs. balanced dataset changes the accuracy of the model:
+
+Create 2 datasets, Medline_diag and Medline_nodiag by separating the diagnostics vs non_diagnostics cases (using filter)
+
+Then two datasets Medline_train and Medline_test with respectively: 
+1. training --> nodiag: 700 diag: 300 | test --> nodiag: 200 diag: 200
+2. training --> nodiag: 300 diag: 700 | test --> nodiag: 200 diag: 200
+3. training --> nodiag: 500 diag: 500 | test --> nodiag: 200 diag: 200
+
+To combine the training and the test set you can use the following code to help you:
+Medline_train <- bind_rows(Medline_diag[1:700,], Medline_nodiag[1:300,])
+
+when the training and test datasets have been done, don't forget to randomise the training dataset
+(e.g. Medline_train <- Medline_train[sample(nrow(Medline_train)),])
+
+And use bind_rows to join back the training and test set into Medline. 
+
+Check how this affects the accuracy of the model. 
+
