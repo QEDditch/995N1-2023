@@ -23,8 +23,9 @@ output: html_notebook
 ##  Bibliometrix Package  ##
 ############################
 ```{r}
-# 0. Make sure all the relevant libraries are istalled
+# 0. Make sure all the relevant libraries are installed
 #------------------------------------------------------
+#install.packages("bibliometrix") #if required
 library(bibliometrix)     # to understand how function are used see the manual at https://cran.r-project.org/web/packages/bibliometrix/bibliometrix.pdf
 library(tidyverse)
 # If any of these packages are missing, use install packages (e.g. install.packages("bibliometrix"))
@@ -34,13 +35,16 @@ library(tidyverse)
 # 1. Load the dataset
 #------------------------------------------------------
 
-# Instructions #
+# Instructions if you download the file to your own machine#
 # After downloading the dataset put it in a speific directory
 # copy the directory in the code below 
 # then use the full file name to read the file....
 
-#setwd("/Users/fl49/Desktop")           # Find the directory of your dataset
-isi_original_file <- "deep_learning_wos-1.txt"        # put in the name of the file you would like to read, don't forget to put the full extention name (e.g. '.txt')
+#or you can just use the github url
+
+
+url = "https://raw.githubusercontent.com/QEDditch/995N1-2023/main/data/deep_learning_wos-1.txt"
+isi_original_file <- url        # put in the name of the file you would like to read, don't forget to put the full extention name (e.g. '.txt')
 isi_file <- convert2df(isi_original_file, dbsource="wos", format="plaintext")    # Convert the directory of the dataset, use either the manual above or the help function (e.g. ?convert2df) to find the possible 
 
 # Inspect the isi_file to see the variables and number of observations
