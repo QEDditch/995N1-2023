@@ -1,0 +1,76 @@
+---
+title: " Introductory Data Science for Innovation. W1 - Exercises"
+author: "David Eggleton"
+date: '2023-09-12'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In the snippets below try the following:
+
+# 1. Do simple computations
+
+Simple computation (Use any number. Try it in the Console too. Remember it's Ctrl + Enter to run a single line in a .R file but in a .Rmd file you can also click 'play').
+Try out:
+
+* addition  
+* subtraction  
+* multiplication  
+* division  
+
+```{r basic arithmetic, echo = FALSE}
+
+
+```
+
+# 2. Use variable 'a' in cumulative steps
+
+* Assign the value 1 to a variable called a. Key command for <- is 'Alt'/'Option' + '-'
+* Add 1 to a and assign it back to a
+* Subtract a from 10 and assign it back to a
+* Multiply a by 4 and assign it back to a
+* Divide a by 2 and reassign it back to a
+* Create a new variable for the 'expected value of a' and set it equal to 16
+* Check if value of a is right (if it returns true you are right, if false you are wrong). 
+``` {r a_playtime, echo = FALSE}
+
+```
+
+Print the value of a
+
+```{r print, echo = FALSE}
+
+```
+
+Go back in code and assign a different value to a (such as 10 or 5) and rerun the code above. Just play around - you can't break it and even if you do just revert to the git.
+
+```{r scratch, echo = FALSE}
+
+
+
+```
+
+# 3. Including Plots
+
+You can also embed plots so it's a bit easier to see, for example:
+
+```{r plot, echo= FALSE}
+data(Titanic)
+Titanic <- as.data.frame(Titanic) 
+
+hist(Titanic$Freq)
+```
+
+Note that the `echo = FALSE` parameter above was added to the code chunks to prevent printing of the R code that generated the plot. Try changing it to `TRUE` and see what (if anything) happens!
+
+# 4. Work with packages
+
+Try to install a library whether in the console or here. Tidyverse is a good idea because you're going to be using it a lot. Syntax is a bit weird but you'll get used to it. Installation requires quotes, loading the library doesn't
+```{r packageInstall, echo = FALSE}
+
+
+
+```
