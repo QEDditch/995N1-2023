@@ -1,0 +1,21 @@
+   .gdbar img {
+        width: 358px !important;
+        height: 70px !important;
+        margin: 8px 8px;
+    }
+
+    .gdbar {
+        width: 358px !important;
+        height: 86px !important;
+    }
+    
+    body {
+		text-align: justify}
+
+    slides > slide:not(.nobackground):before {
+        width: 0px;
+        height: 0px;
+        background-size: 0px 0px;
+        background-color: white !important;
+    }
+    

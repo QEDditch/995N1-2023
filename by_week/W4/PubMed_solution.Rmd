@@ -1,0 +1,95 @@
+---
+title: "API_lecture"
+author: "Frédérique Bone"
+date: "18/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(httr)
+library(tibble)
+```
+
+## Get data from crossref
+
+We are going to explore cross_ref which available only through an API
+
+Read documentation:
+https://github.com/CrossRef/rest-api-doc
+
+And R documentation:
+https://docs.ropensci.org/rcrossref/
+
+Setup your email address
+```{r}
+file.edit("~/.Renviron")
+```
+
+
+#### Restart R Session ####
+
+Crossref has a specific R package to query the API, which we are going to use today to collect some data
+Try the code chunck below, but replacing
+(i) the query for the specific month and year assigned to you in class
+(ii) increase the limit of the number of paper returned to 400
+Running these queries take longer since we are waiting a response from a server
+(iii) Check the first 10 rows in the dataframe
+
+```{r}
+# (i)  
+ANN <- cr_works(query="artificial neural network", filter=c(has_funder = TRUE, from_print_pub_date="2020-01-01", until_print_pub_date="2020-01-31"), limit= 20, .progress="text")
+
+# (ii) 
+ANN_data <- ANN$data
+
+# (iii) 
+__
+```
+
+(i) Check names of the columns available
+```{r}
+
+```
+
+
+Create a new dataset from the crossref data collected to look at the top funders within those 400 first data point collected
+(1) keep only the columns 'container.title', 'doi', 'title', 'funder'
+(2) separate funders for each funder taking only one row (using 'unnest' of the purr package in tidyr)
+(3) View the top 20 rows of the dataframe to see whether things have worked how you intended to
+
+```{r}
+ANN_funder <- __ %>%
+  __ %>%
+  __(funder)
+
+__
+
+```
+
+
+Clean the column names coming from the nested funder dataset:
+(i) on top of the columns to keep before, keep 'name' and 'DOI'
+(ii) rename 'name' to a more appropriate name (as this is specific to the funder)
+(iii) rename 'DOI' to a more appropriate name (as this is specific to the funder)
+
+```{r}
+ANN_funder <- ANN_funder %>%
+  __ %>%
+  __ %>%
+  __
+```
+
+Create a summary of the funder data, to identify the top funder in your specific month
+The resulting dataframe will be arranged in descending order
+display the top three answers (these will be reported in class)
+```{r}
+Funder_summary <- ANN_funder %>%
+  __(__)%>%
+  __(count= __)%>%
+  ungroup()%>%
+  arrange(desc(count))
+
+__
+```
+
+

@@ -1,0 +1,730 @@
+---
+title: "Introduction to machine learning"
+author: "Frederique Bone"
+date: "Introductory Data Science for Innovation (995N1) -- Week 9,  March 2020"
+output:
+  ioslides_presentation:
+    logo: fig/SPRU.png
+    smaller: no
+    widescreen: yes
+
+css: my.css
+bibliography: bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+<!------------------------------------------>
+<!-- Outline ------------------------------->
+<!------------------------------------------>
+# Outline
+
+## Outline
+* Lecture's objectives
+* What is machine learning?
+* The different types of machine learning
+* Working with supervised machine learning
+* Working with unspervised machine learning
+* Ethical considerations of machine learning
+* What is next?
+
+
+
+<!------------------------------------------>
+<!-- Lecture objectives--------------------->
+<!------------------------------------------>
+# Lecture's objectives
+
+## Lecture's objectives
+After having learned about getting data, processing it,
+working with text (text mining) and understanding data visualisation,
+this lecture is going to introduce machine learning. You may already have encountered some of the machine learning algorithms we are going to see today.  
+
+This lecture aims first at giving you an overview of what machine learning is, giving you a few definitions, what it is generally used for, and in broad lines what are the different types of machine learning that you may encounter.   
+
+Second we will delve into a few examples of common algorithms used in machine learning and run a few practical examples in R. We will also discuss some ethical concerns that you should keep in mind when using or implementing such a system. 
+
+<!------------------------------------------>
+<!-- What is machine learning? ------------->
+<!------------------------------------------>
+# What is machine learning?
+## What is machine learning?
+
+**Machine learning** gives computers the ability to acquire their own knowledge, by extracting patterns from data, without the need to give explicit rules / hard-coded knowledge [@Goodfellow].
+The computer will learn from experience.
+
+Machine learning uses computer agorithms to solve problems through the building of models and in turn allows it also to take decisions.
+
+## What is machine learning?
+"Every algorithm has an input and an output: the data goes into the computer, the algorithm does what it will with it, and out comes the result. 
+**Machine learning** turns this around: in goes the data and the desired result and out comes the algorithm that turns one into the other. Learning algorithms -also known as learners- are algorithms that make other algorithms."  
+
+<right>
+The master algorithm - Source : @Domingos 
+</right>
+
+
+## What is machine learning?
+Before machine learning, programmers had to instructs rules so that the computer could follow a step by step guide on how to work with data. 
+
+<center>
+```{r, out.width = "700px"}
+knitr::include_graphics("fig/fig1_old.png")
+```
+</center>
+<center>
+<font size="4">Symbolic approach to programming - Source: @Geron </font>
+</center>
+
+## What is machine learning?
+**Machine learning** involves building models from data. The advance here, is that the model properties may not be known by the programmer, but that the algorithm will make a model using the properties of the data. 
+
+<center>
+```{r, out.width = "630px"}
+knitr::include_graphics("fig/fig2_old.png")
+```
+</center>
+<center>
+<font size="4">Solve problems with learning algorithms      Source: [@Geron]</font>
+</center>
+
+<!------------------------------------------>
+<!--The different types of machine learning->
+<!------------------------------------------>
+# Types of machine learning
+## Types of Machine learning
+<div>
+How can the algorithm learn from data?  
+Here are the most common types of machine learning techniques: 
+</div>
+<div>
+* Supervised learning
+* Unsupervised learning
+* Semi-supervised learning
+* Reinforcement learning
+* Active learning
+</div>
+
+<div>
+There are many ways in which a model can be built using data.  
+</div>
+
+## Types of Machine learning
+<div>
+How can the algorithm learn from data?
+Here are the most common types of machine learning techniques: 
+</div>
+<div>
+* **Supervised learning**
+* **Unsupervised learning**
+* Semi-supervised learning
+* Reinforcement learning
+* Active learning
+</div>
+<div>
+First, we will explore in more details what is meant by supervised and unsupervised learning.
+</div>
+
+
+## Supervised learning
+<center>
+```{r, out.width = "700px"}
+knitr::include_graphics("fig/fig2.png")
+```
+</center>
+<center>
+<font size="4">Solve problems with learning algorithms  -  Source: @Rhys</font>
+</center>
+
+## Supervised learning
+<div class="columns-2">
+**Supervised learning**: the machine builds a model from *labelled* examples. This enables the predicition of features for other unlabelled examples.
+This type of machine learning is used mainly to sort examples in different categories (classification purposes), or predict a target (numeric value) based on a set of features. 
+
+<center>
+```{r, out.width = "300px"}
+knitr::include_graphics("fig/supervised_learning.png")
+```
+</center>
+</div>
+
+## Unsupervised learning
+<div class="columns-2">
+**Unsupervised learning**: This learning is done without labelled examples; the machine learns from the known features of the data. The algorithm try to either group together examples which are similar (i.e. clustering), or understand differentiating features of the data, or reduce the number of variables. 
+
+After the ML sorted the data, some labelling may still be required, but these are done post-learning.
+
+<center>
+```{r, out.width = "300px"}
+knitr::include_graphics("fig/unsupervised_learning.png")
+```
+</center> 
+</div>
+
+## Types of Machine learning
+Here are a few algorithms that you may recognise:
+<center>
+```{r, out.width = "1000px"}
+knitr::include_graphics("fig/MLalgo1.png")
+```
+</center>
+
+## Types of Machine learning
+Classifying algorithms - Blue:supervised, Orange:unsupervised, Green:debatable
+<center>
+```{r, out.width = "1000px"}
+knitr::include_graphics("fig/MLalgo2.png")
+```
+</center>
+
+## Types of Machine learning
+<div>
+How can the algorithm learn from data?
+</div>
+<div>
+* Supervised learning
+* Unsupervised learning
+* **Semi-supervised learning** : Use a mix of supervised and unsupervised learning
+* **Active learning**: The machine learning chooses the examples to be labelled
+* **Reinforcement learning**: The machine has to maximise a reward given for good action (e.g. alphago)  
+</div>
+
+## Types of Machine learning
+You can classify these algorithms by training type:
+<center>
+```{r, out.width = "1000px"}
+knitr::include_graphics("fig/MLalgo2.png")
+```
+</center>
+
+## Types of Machine learning
+Or for instance by method's type, inspired by @Domingos:
+<center>
+```{r, out.width = "1000px"}
+knitr::include_graphics("fig/MLalgo3.png")
+```
+</center>
+
+
+## Supervised and Unspervised Learning
+<div>
+  
+In the next part of the lecture, we are going to explore in more details what supervised and unsupervised learning entails. While going through some general principles for these two types of machine learning, we will delve into examples used in innovation studies.  
+
+We will see some practical examples using in R using text data.
+</div>
+
+<!------------------------------------------>
+<!---- Working with supervised ML  --------->
+<!------------------------------------------>
+# Supervised Learning
+
+## General principles
+**Supervised learning** is used when the analyst has a clear idea of the target to be reached. The target is instructed to the machine using data, where one variable acts as the target. 
+
+The target can either be a classification, where there can be two (binary) or more (factors) classes; or  a regression problem, where the target is a number, and the algorithm will learn by looking how far off it is from the target. 
+
+The model will learn from each of the example given; and to be performant you will need to give it a variety of cases. 
+
+The data given to the algorithm is split into two sets, a training set which will be used to build the model, and a test set to evaluate how good the model constructed actually is. 
+
+
+## General principles
+In **supervised learning**, there are five main steps to follow:  
+
+<div>
+* Prepare the data to the appropriate format
+* Split the data into two sets: one to build the model (training data), one to check the performance of the model (testing data)
+* Build the model with the training data
+* Check how good the model is, using the test data
+* Resampling can be done to improve the accuracy of the problem
+</div>
+
+## Practicing with R
+In this week's exercise we will go more in depth into supervised learning. We will start from an example code of a supervised learning algorithm, which we will try to improve upon. 
+
+We will iteratively alter parameters, such as adjusting the training data, changing the algorithm to understand how the performance of the model is changing. 
+Do open your workbook now, and we will start to work through the workbook together. 
+
+## R packages 
+There are two main packages for machine learning in R.  
+
+These are the **caret** and the **mlr** packages.  
+
+For our examples of supervised learning, we are going to use latest version of the mlr (i.e. the mlr3) package, as it is simple to use and in active development. 
+
+## Practicing supervised learning (1)
+To examplify the process of supervised machine learning, we are going to use some data from the Cancerscreen project. The problem consists of checking whether a given paper is about diagnostics or not. 
+
+To classify the data, we used the MeshTerm classification, where we identify terms which are sepcific to diagnostics. 
+
+Ultimately the model would be used on data retrieved from bibliometric datasets, such as the Web of Science and Scopus and does not benefit from a classification. 
+
+## Practicing supervised learning (2)
+```{r message=FALSE, warning=FALSE, include=FALSE}
+rm(list=ls())
+library(tidyverse)
+library(dplyr)
+setwd("/Users/fl49/Desktop/")
+```
+```{r echo=TRUE}
+# 1. Explore data
+Medline <- readRDS("Diag_full.rds")
+Medline <- Medline %>%
+  select(-diag_type, -case)%>%
+  unique()
+summary(Medline)
+```
+We have three columns:  
+*PMID* : Pubmed ID for each of the document  
+*T_A*: text - combination of the title and abstract 
+*diagnosis*: is the paper about diagnosis
+
+## Practicing supervised learning (3)
+Let's have a look at the data first:
+```{r echo=TRUE}
+Medline <- as_tibble(Medline)
+glimpse(Medline)
+```
+For supervised machine learning we will need examples, a target and features. 
+The dataset is organised into observations (by articles represented by PMIDs),  
+we have a target which is the variable diagnosis,  
+but how do we transform the text into features?
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# Make sure the data is randomised
+set.seed(200)
+Medline <- Medline[sample(nrow(Medline)),]
+```
+
+## Practicing supervised learning (4)
+We need first to normalise the text data...
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(tidytext)
+library(tm)
+library(SnowballC)
+Stop_w<- c(stopwords("en"), "introduction", "conclusion","objective", "aim", "methods", "results", "conclusions","background", "percent", "may", "use", "used", "however", "p", "cancer", "study", "lung", "prostate","prostatic", "patient", "colorectal")
+Medline$T_A <- removeNumbers(Medline$T_A)
+Medline$T_A <- tolower(Medline$T_A)
+Medline$T_A <- removeWords(Medline$T_A, Stop_w)
+Medline$T_A <-str_replace_all(Medline$T_A, "[^[:alnum:]]", " ")
+Medline$T_A <- gsub('\\b\\w{1,2}\\b', '', Medline$T_A) # remove words of two letters or under
+```
+
+
+## Practicing supervised learning (5)
+Then we are transforming the data into a vector of features using tf-idf:
+```{r echo=TRUE, message=FALSE}
+# reduce the size of the data to seed up the routine
+Tidy_Med <- Medline [1:3000,]
+
+# extract token and use stemming. 
+Tidy_Med <- Medline %>%
+  unnest_tokens(word, T_A) %>%
+  mutate(word = wordStem(word, language="english")) 
+
+# compute word counts
+Tidy_Med <- Tidy_Med %>%
+  count(PMID, word, sort=T) 
+
+# compute tf_idf
+Tidy_Med <- Tidy_Med %>%
+  bind_tf_idf(word, PMID, n)
+
+
+```
+
+## Practicing supervised learning (6)
+Then we are grouping words together, the words will become the features:
+```{r echo=TRUE, message=FALSE}
+# 4. Get the word as features in columns
+
+# save the diagnostics features separately
+diag <- Medline %>%
+  select(PMID, diagnosis)%>%
+  unique()
+
+# Create a list of word to keep which are higher than a certain threshold
+word <- Tidy_Med %>%
+  group_by(word) %>%
+  summarize(n_doc = n())%>%
+  filter(n_doc>39)
+```
+
+In order to reduce the number of features we will only select words which are present in 2% of the documents (i.e. 40 documents).  
+We also saved the target in a separate document to not loose it. 
+
+## Practicing supervised learning (7)
+Finally, the word features will become columns (to be considered as variables):
+```{r echo=TRUE, message=FALSE}
+# only select the words over the threshold
+Tidy_Med <- inner_join(Tidy_Med, word)%>%
+  select(-n_doc)
+
+#make words into columns/features
+Tidy_Med <- Tidy_Med %>%
+  select(-c(n, tf, idf))%>%
+  pivot_wider(names_from = word,
+              values_from = tf_idf, 
+              values_fill=list(tf_idf = 0))
+
+# add back the diagnosis column
+Tidy_Med <- inner_join(diag, Tidy_Med)
+```
+
+## Practicing supervised learning (8)
+
+We can see now that we have each word being one column, which represent the features and tf-idf score as value. We will use these words as features to train the model... 
+
+```{r echo=TRUE, message=FALSE, paged.print=TRUE}
+head(Tidy_Med, n=6)
+```
+
+
+## Practicing supervised learning (9)
+To avoid problems with headers we are going to rename them, before inputing the features into the machine learning algorithm, but keeping the columns names of the PMID and the diagnosis. 
+```{r echo=TRUE}
+# 5. Tidy up columns
+Tidy_up <- Tidy_Med
+names(Tidy_up)[3:ncol(Tidy_up)]<- as.character(seq(1, ncol(Tidy_up)-2, by=1))
+colnames(Tidy_up) <- make.names(colnames(Tidy_up),unique = T)
+Tidy_up$diagnosis <- as.factor(Tidy_up$diagnosis)
+```
+
+
+## Practicing supervised learning (10)
+Let's start to set up our learner: 
+```{r echo=TRUE}
+library(mlr3)
+library(mlr3learners)
+
+# set up the classifier task using the right data and target
+task = TaskClassif$new(id="PMID", backend=Tidy_up, target="diagnosis")
+
+# define the algorithm to be used
+learner = lrn("classif.rpart")
+```
+In _task_ we define a new task, which is a classification task. If you want to target a number you would use _TaskRegr_.  
+
+Then you setup your learner, in which you decide the type of algorithm you would like to use.  
+Here we use a classification tree, but more are available. 
+
+## Practicing supervised learning (11)
+Let's set our learner with part of the data: 
+```{r echo=TRUE}
+# 7. Train the model
+# train a model of this learner for a subset of the task
+learner$train(task, row_ids = 1:300)
+# this is what the decision tree looks like
+learner$model
+```
+But in general you would use 60-80% of data to train the algorithm.
+
+## Practicing supervised learning (12)
+Let's use this model to predict the diagnosis label of our test data: 
+```{r echo=TRUE}
+# 8. Use the test set to see how the model is classifying the test data
+predictions = learner$predict(task, row_ids = 301:350)
+# look at the first 10 rows of the predictions
+head(as.data.table(predictions), n=10)
+```
+
+## Practicing supervised learning (13)
+How good is our model?
+```{r echo=TRUE}
+# 9. accuracy of our model on the test set
+predictions$score(msr("classif.acc"))
+```
+
+```{r echo=TRUE}
+# 10. look at the confusion matrix
+predictions$confusion
+```
+
+## Supervised learning 
+While the **accuracy** may give an indication about how good your model is,
+there are situations in which it may not be enough, the false positive (type I error),
+or the false negative (type II error) can be a good complement to it.
+
+If you have an unbalanced dataset (90% of diagnostic publications), your classifier can guess diagnostic for all the papers, and it would be 90% accurate. 
+
+In some cases you would rather have a model which would minimise the false negative compared to the true positive. If you do some covid testing for choosing who should self isolate, you would rather make an error where you diagnose someone with covid, who is not really sick and ask them to stay at home. There may be cases in which you may want a less accurate model, but minimise one of the error type. 
+
+For more information on how to make more indicators with the confusion matrix, you can look at measures such as sensitivity, specificity, precision, recall ... (look at @Han2012, pp. 366-370)
+
+## Supervised learning - practice
+Let's try to improve upon the model I have just started. Let's work start working with the first exercise. 
+
+
+
+<!------------------------------------------>
+<!----- Working with unsupervised ML ------->
+<!------------------------------------------>
+# Unsupervised Learning
+
+## General principles
+**Unsupervised learning** is used for more exploratory purposes, looking at features in the data, and group them into classes. 
+
+There is no given target, the algorithm finds similiarty in the observations or underlying relevant features. The analyst may need to input some parameters, such as the number of clusters to be found, and usually needs to identify/label clusters after the algorithm has done the grouping.  
+
+You have already seen some examples of unsupervised learning in previous classes, such as topic models, or co-word analysis. 
+
+## Supervised learning (co-word analysis)
+<center>
+![](fig/rice.png)
+</center>
+<center>
+<font size="3">Source: @Ciarli2019</font>
+</center>
+
+## Examples of supervised learning (topic models)
+<center>
+```{r, out.width = "700px"}
+knitr::include_graphics("fig/spruphd.png")
+```
+
+</center>
+<center>
+<font size="4">Source: A bibliometric Perspective on SPRU Research Activity: The PhD Data [@Lang2016]</font>
+</center>
+
+## Using topic models 
+Topic models builds on the asumption that there are multiple topics within each document; it builds on the assumption about statistical distribution of word /frequency within and between documents. 
+
+There are several algorithms to build topic models, LDA (Latent Dirichlet allocation), LSA or LSI (Latent Semantic Analysis), NNMF (Non-Negative matrix factorisation) which are the most popular ones.
+They normally take normalized and vectorized text document as an input (e.g. Tf-Idf form), though you still have to enter parameters such as the number of topics to be computed from the variety of documents in use.  
+
+## Using topic models 
+<center>
+```{r, out.width = "700px"}
+knitr::include_graphics("fig/lda.png")
+```
+
+</center>
+
+<center>
+<font size="4">Source: @Blei2012 (blue = data analysis, pink =  evolutionary biology, yellow = genetics)</font>
+</center>
+
+<!------------------------------------------>
+<!----- Word2vec a special case      ------->
+<!------------------------------------------>
+## Word embedding models
+**Word embedding models** have become increasingly popular for text analysis. Its main use is to understand the relationship between words in a corpus. After training the model, you can explore words that are the most similar to a given word (i.e. synonyms), antonyms and much more. 
+
+Word embeddings became popular after the implementation of @Mikolov2013 called _Word2Vec_. Together with _GloVe_ developped by [@Pennington2014], these are the two most popular word embedding algorithms used nowadays. 
+
+One of the main novelty of the algorithm is that it uses surrounding words of each token as labels to train the model. It is therefore ambiguous as to whether it is a unspervised or supervised model.
+
+
+## Practicing GloVe with an example (1)
+Using text data from SPRU publications (SPRU history project) gathered from the Web of Science, Scopus and SRO, I have pre-processed the corpus to integrate the title and abstract of each observation in one field, used lower cases, remove special character and punctuation, and merged the results in a dataset. Let's load the dataset and run a GloVe model on it using the _text2vec_ package.
+
+```{r echo=TRUE, message=FALSE}
+rm(list=ls())
+library(text2vec)
+library(tidyverse)
+
+spru <- read_csv("SPRU_publi.csv")
+head(spru)
+```
+
+## Practicing GloVe with an example (2)
+First, we need to transform the text into tokens. Then, we are going to make a vocabulary using all the tokens that has been identified from the corpus.
+We will also remove the rarer terms, as these won't have enough training data to be useful for the model. 
+```{r echo=TRUE, message=FALSE}
+# Create iterator over tokens
+tokens <- space_tokenizer(spru$text)
+# Create vocabulary. Terms will be unigrams (simple words).
+it = itoken(tokens, progressbar = FALSE)
+vocab <- create_vocabulary(it)  
+# Remove tokens used less than 5 times
+vocab <- prune_vocabulary(vocab, term_count_min = 5L)
+```
+
+## Practicing GloVe with an example (3)
+In the next step, we first vectorise the vocabulary, which then will be used to construct the term-co-occurence matrix (tcm), using the skip-gram model. For this model each word is represented using the five words before and the five words after each given token. 
+
+```{r echo=TRUE, message=FALSE}
+# Use our filtered vocabulary
+vectorizer <- vocab_vectorizer(vocab)
+# use window of 5 for context words
+tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
+```
+
+## Practicing GloVe with an example (4)
+Let's create a model based on 50 features and use 10 iterations to improve the model. Note that the model is based on two matrices, the main matrix and the context matrix. 
+
+```{r echo=TRUE, message=FALSE}
+glove = GlobalVectors$new(rank = 50, x_max = 10)
+wv_main = glove$fit_transform(tcm, n_iter = 10)
+wv_context = glove$components
+word_vectors = wv_main + t(wv_context)
+```
+rank: number of features in the model
+x_max: maximum number of co-occurences to use in the matrix
+n_iter: number of iteration to optimise the model
+
+## Practicing GloVe with an example (4)
+Let's try our model out on two words and what words would be the most similar to them. 
+Let's take the word _research_ first:
+```{r echo=TRUE, message=FALSE}
+research =  word_vectors["research", , drop = FALSE]
+cos_sim = sim2(x = word_vectors, y = research, method = "cosine", norm = "l2")
+head(sort(cos_sim[,1], decreasing = TRUE), 5)
+```
+
+Or we could also take the word _firm_:
+```{r echo=TRUE, message=FALSE}
+firm =  word_vectors["firm", , drop = FALSE]
+cos_sim = sim2(x = word_vectors, y = firm, method = "cosine", norm = "l2")
+head(sort(cos_sim[,1], decreasing = TRUE), 5)
+```
+
+# Other techniques
+## Clustering techniques
+Clustering techniques are more traditional unsupervised learning techniques (for any types of problems), a little less used for text mining than the above. 
+
+**Clustering** is the process of partioning a set of observations into subsets (i.e. classes or clusters). In each cluster, the observations are similar to one another, while dissimilar to observation in other clusters. [@Han2012, pp. 444] 
+
+To do clustering analysis, you need to evaluate how similar observations are in your data, and then having an algorithm (i.e. learner), which will group them into cluster; different learners may bring different clustering. To prepare data for the learner you may want to run similarity measures on the observations (e.g. cosine similarity).
+
+## Clustering techniques
+There are three main types of clustering:
+<center>
+```{r, out.width = "700px"}
+knitr::include_graphics("fig/clustering.png")
+```
+</center>
+<center>
+<font size=4">Source: @Han2012 </font>
+</center>
+
+
+## Clustering techniques
+For the **partitioning method**, a popular example is _k-Means_. 
+<center>
+```{r, out.width = "900px"}
+knitr::include_graphics("fig/partitioning.png")
+```
+</center>
+<center>
+<font size=4">Source: @Han2012 </font>
+</center>
+
+## Clustering techniques
+For the **hierarchical method**, a popular examples are _AGglomerative NESting_ (AGNES) or _DIvisive ANAlysis_ (DIANA). 
+<center>
+```{r, out.width = "700px"}
+knitr::include_graphics("fig/hierarchical.png")
+```
+</center>
+<center>
+<font size=4">Source: @Han2012 </font>
+</center>
+
+## Clustering techniques
+For the **density based method**, a popular examples are _Density-Based Spatial Clustering of Applications with Noise_ (DBSCAN). 
+<center>
+```{r, out.width = "700px"}
+knitr::include_graphics("fig/density.png")
+```
+</center>
+<center>
+<font size=4">Source: @Han2012 </font>
+</center>
+
+## Unsupervised learning
+There are many other methods within clustering techniques to identify clusters using statistical, grid based methods, and many more algorithms.  
+
+The above just provides you with an overview of what is feasible. 
+
+
+<!------------------------------------------>
+<!-- Ethical considerations----------------->
+<!------------------------------------------>
+# Ethical considerations
+## Ethical considerations
+### **Training data**
+<div class="columns-2">
+The model that you developped is as good as your training data. The training data can overrepresent or underrepresent certain categories / characteristics. Thus the resulting model when implemented may not work well for these undererpresented examples. 
+
+One example was the automatic labelling of objects in pictures. 
+<center>
+```{r, out.width = "400px"}
+knitr::include_graphics("fig/Google_gorillas.png")
+```
+</center>
+</div>
+
+## Ethical considerations
+### **Training data**
+<div>
+You may include sensitive or data about protected characteristics of individuals.  
+Even if you take care of not including these, other characteristics may be highly correlated with protected characteristics and become discriminatory. 
+</div>
+<div>
+Machine learning may also be rolled out on a variety of uses over time; so the data used to build a model may be fit for purpose at the time of development, but may not be representative of new cases that you encounter and want to generalise from.
+</div>
+
+## Ethical considerations
+### **Accountability**
+<div>
+Using machine learning to make decision may raise the question of accountability and transparency, how did we reach the decision, what particularly lead to the decision or the outcome?  
+
+Some popular machine learning algorithms, such as neural networks / deep learning, don't have a transparent model and hence it may be difficult to understand 'why' it has recommended a specific decision. 
+</div>
+
+<!------------------------------------------>
+<!-- Questions ---------------------------->
+<!------------------------------------------>
+# Questions
+
+
+<!------------------------------------------>
+<!--------      What is next?     ---------->
+<!------------------------------------------>
+# What's next?
+
+
+
+## Next week
+Week 10, we will have a session to discuss your assessments, especially the reports. If you have any ideas for your report, you will have a chance to share these on a padlet, and we will give comments ahead of the session. Your report is due on the 10th of May 2021 at 16:00 (see sussex direct)
+
+Week 11, we will have a workshop with Chantale Tippett from the Nesta innovation team, and we will look at how to best use of data science tools to communicate with policy makers. 
+
+The group assessment is also due on the Friday 30th of April by 17.00: submit on the canvas site by going to goup assignment and submit your assignment (one submission is expected for every group). **Can you tell me who is going to make the submission?**
+Any question on assessments?
+
+
+More information on Canvas. 
+
+## Internship at ResearchFish / Interfolio UK
+**Application process and tentative timeline**: 
+
+**Next week**: Sharing of the Ad / application process for the internship
+
+**21st of April**: Application due date
+
+**26th-28th of April**: Interviews (remotely)  
+
+**30th April - 2nd May**: Final decision  
+
+Once I get the full job advert I will update the course Canvas page. 
+
+
+<!------------------------------------------>
+<!-- References ---------------------------->
+<!------------------------------------------>
+# References
+
+## References{.smaller}
+<!-- <style> -->
+<!-- slides > slide { overflow: scroll; } -->
+<!-- slides > slide:not(.nobackground):after { -->
+<!--   content: ''; -->
+<!-- } -->
+<!-- </style> -->
